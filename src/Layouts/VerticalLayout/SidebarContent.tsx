@@ -178,7 +178,7 @@ const SidebarContent = (props: any) => {
             </li>
             <li>
               <Link to="#" >
-                <i className="fas fa-boxes"></i>
+                <i className="fas fa-money-bill"></i>
                 <span>Faturamento</span>
               </Link>
               <ul>
