@@ -176,6 +176,20 @@ const SidebarContent = (props: any) => {
                 <span>{props.t("Stock")}</span>
               </Link>
             </li>
+            <li>
+              <Link to="#" >
+                <i className="fas fa-boxes"></i>
+                <span>Faturamento</span>
+              </Link>
+              <ul>
+                <li>
+                  <Link to={"/revenue"}>Faturamento</Link>
+                </li>
+                <li>
+                  <Link to={"/revenue/register"}>Cadastrar Vendedor</Link>
+                </li>
+              </ul>
+            </li>
             {/* <li className="menu-title">{props.t("Apps")}</li>
 
             <li>
