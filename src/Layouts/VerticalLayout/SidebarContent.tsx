@@ -142,7 +142,7 @@ const SidebarContent = (props: any) => {
           <ul className="metismenu list-unstyled" id="side-menu">
             <li className="menu-title">{props.t("BI")}</li>
             <li>
-              <Link to="#" >
+              <Link to="/register"  >
                 <i className="fab fa-wpforms"></i>
                 <span>Cadastro</span>
               </Link>
@@ -195,7 +195,7 @@ const SidebarContent = (props: any) => {
               </Link>
             </li>
             <li>
-              <Link to="#" >
+              <Link to="/revenue" >
                 <i className="fas fa-money-bill"></i>
                 <span>Faturamento</span>
               </Link>
