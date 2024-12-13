@@ -140,7 +140,7 @@ const SidebarContent = (props: any) => {
       <SimpleBar className="h-100" ref={ref}>
         <div id="sidebar-menu">
           <ul className="metismenu list-unstyled" id="side-menu">
-            <li className="menu-title">{props.t("BI")}</li>
+            <li className="menu-title">{'Cadastros'}</li>
             <li>
               <Link to="/register"  >
                 <i className="fab fa-wpforms"></i>
