@@ -6,7 +6,6 @@ import classnames from "classnames";
 import * as Yup from 'yup';
 import Vendedor from './_vendedor';
 import Goal from './_goal';
-import Admin from './_administrar';
 
 type Props = {}
 
@@ -54,7 +53,7 @@ const RegisterSeller = (props: Props) => {
       <div className='page-content'>
         <Card>
           <CardBody>
-            <CardTitle className="h4">Cadastro Faturamento</CardTitle>
+            <CardTitle className="h4 mb-4">Cadastro Faturamento</CardTitle>
 
             <Nav pills className="navtab-bg nav-justified">
               <NavItem>
@@ -85,20 +84,6 @@ const RegisterSeller = (props: Props) => {
                   <span className="d-none d-sm-block">Meta do Vendedor</span>
                 </NavLink>
               </NavItem>
-              <NavItem>
-                <NavLink
-                  style={{ cursor: "pointer" }}
-                  className={classnames({
-                    active: activeTab === "3",
-                  })}
-                  onClick={() => {
-                    toggle1("3");
-                  }}
-                >
-                  <span className="d-block d-sm-none"><i className="far fa-envelope"></i></span>
-                  <span className="d-none d-sm-block">Admin</span>
-                </NavLink>
-              </NavItem>
             </Nav>
 
             <TabContent activeTab={activeTab} className="p-3 text-muted">
@@ -113,13 +98,6 @@ const RegisterSeller = (props: Props) => {
                 <Row>
                   <Col sm="12">
                     <Goal />
-                  </Col>
-                </Row>
-              </TabPane>
-              <TabPane tabId="3">
-                <Row>
-                  <Col sm="12">
-                    <Admin />
                   </Col>
                 </Row>
               </TabPane>

@@ -9,14 +9,18 @@ import ForgotPassword from "pages/Authentication/ForgotPassword";
 import SignUp from "pages/Authentication/Register"
 import Stock from "pages/Stock";
 import Revenue from "pages/Revenue";
-import Register from "pages/Revenue/Register";
+import Register from "pages/Register/Empresa";
+import User from "pages/Register/Usuario";
+import Seller from "pages/Register/Vendedores";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
   { path: "/profile", component: <UserProfile /> },
   { path: "/stock", component: <Stock /> },
   { path: "/revenue", component: <Revenue /> },
-  { path: "/revenue/register", component: <Register /> },
+  { path: "/register/enterprise", component: <Register /> },
+  { path: "/register/user", component: <User /> },
+  { path: "/register/seller", component: <Seller /> },
 
   { path: "/", exact: true, component: <Navigate to="/dashboard" /> },
 ];

@@ -140,6 +140,24 @@ const SidebarContent = (props: any) => {
       <SimpleBar className="h-100" ref={ref}>
         <div id="sidebar-menu">
           <ul className="metismenu list-unstyled" id="side-menu">
+            <li className="menu-title">{props.t("BI")}</li>
+            <li>
+              <Link to="#" >
+                <i className="fab fa-wpforms"></i>
+                <span>Cadastro</span>
+              </Link>
+              <ul>
+                <li>
+                  <Link to={"/register/enterprise"}>Empresa</Link>
+                </li>
+                <li>
+                  <Link to={"/register/user"}>Usuário</Link>
+                </li>
+                <li>
+                  <Link to={"/register/seller"}>Vendedores</Link>
+                </li>
+              </ul>
+            </li>
             <li className="menu-title">{props.t("Menu")} </li>
             <li>
               <Link to="/#" className="has-arrow">
@@ -184,9 +202,6 @@ const SidebarContent = (props: any) => {
               <ul>
                 <li>
                   <Link to={"/revenue"}>Faturamento</Link>
-                </li>
-                <li>
-                  <Link to={"/revenue/register"}>Cadastrar Vendedor</Link>
                 </li>
               </ul>
             </li>

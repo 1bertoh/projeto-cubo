@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, CardBody, CardTitle, Col, Form, FormFeedback, Input, Label, Row } from 'reactstrap'
+import { Card, CardBody, CardTitle, Col, Form, FormFeedback, Input, Label, Row, Table } from 'reactstrap'
 import { useFormik } from "formik";
 
 import * as Yup from 'yup';
@@ -97,8 +97,9 @@ const Vendedor = (props: Props) => {
                                     onBlur={formik.handleBlur}
                                 >
                                     <option>Select</option>
-                                    <option>Large select</option>
-                                    <option>Small select</option>
+                                    <option>Admin</option>
+                                    <option>Vendedor</option>
+                                    <option>Gerente</option>
                                 </select>
                                 {
                                     formik.errors.category && formik.touched.category ? (
@@ -202,27 +203,7 @@ const Vendedor = (props: Props) => {
                                 } */}
                             </div>
                         </Col>
-                        <Col lg={4}>
-                            <div className="mb-3">
-                                <Label htmlFor="formrow-password-Input">Segmento</Label>
-                                <select
-                                    className="form-control"
-                                    name='category'
-                                // value={formik.values.password}
-                                // onChange={formik.handleChange}
-                                // onBlur={formik.handleBlur}
-                                >
-                                    <option>Select</option>
-                                    <option>Large select</option>
-                                    <option>Small select</option>
-                                </select>
-                                {/* {
-                                    formik.errors.category && formik.touched.category ? (
-                                        <FormFeedback type="invalid">{formik.errors.category}</FormFeedback>
-                                    ) : null
-                                } */}
-                            </div>
-                        </Col>
+
 
                         <Col lg={4}>
                             <div className="mb-3">
@@ -232,12 +213,12 @@ const Vendedor = (props: Props) => {
                                         className="form-check-Input"
                                         id="formrow-customCheck"
                                         name="check"
-                                        // value={formik.values.check}
-                                        // onChange={formik.handleChange}
-                                        // onBlur={formik.handleBlur}
-                                        // invalid={
-                                        //     formik.touched.check && formik.errors.check ? true : false
-                                        // }
+                                    // value={formik.values.check}
+                                    // onChange={formik.handleChange}
+                                    // onBlur={formik.handleBlur}
+                                    // invalid={
+                                    //     formik.touched.check && formik.errors.check ? true : false
+                                    // }
                                     />
                                     <Label
                                         className="form-check-Label"
@@ -256,6 +237,75 @@ const Vendedor = (props: Props) => {
                         </button>
                     </div>
                 </Form>
+            </div>
+            <div className='mt-5'>
+                <Table
+                    bordered
+                    hover
+                >
+                    <thead>
+                        <tr>
+                            <th>
+                                #
+                            </th>
+                            <th>
+                                Nome
+                            </th>
+                            <th>
+                                Data Início
+                            </th>
+                            <th>
+                                Categoria
+                            </th>
+                            <th>
+                                Equipe
+                            </th>
+                            <th>
+                                Código Cliente
+                            </th>
+                            <th>
+                                Usuário
+                            </th>
+                            <th>
+                                Tipo Mercado
+                            </th>
+                            <th>
+                                Ativo
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">
+                                1
+                            </th>
+                            <td>
+                                Mark Lucio
+                            </td>
+                            <td>
+                                12/12/2024
+                            </td>
+                            <td>
+                                Cat1
+                            </td>
+                            <td>
+                                Equipe X
+                            </td>
+                            <td>
+                                12
+                            </td>
+                            <td>
+                                Ana Vitória
+                            </td>
+                            <td>
+                                Mercado Interno
+                            </td>
+                            <td>
+                                Sim
+                            </td>
+                        </tr>
+                    </tbody>
+                </Table>
             </div>
         </React.Fragment>
     )

@@ -37,6 +37,7 @@ const StackedBarChart = () => {
                     left: 20,
                     bottom: 5,
                 }}
+                
             >
                 <CartesianGrid horizontal={false} strokeDasharray="3 3" />
                 <XAxis type="number" /> {/* Eixo X para valores numéricos */}
