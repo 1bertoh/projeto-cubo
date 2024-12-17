@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import { Link } from "react-router-dom";
 
@@ -24,51 +24,26 @@ import logoLightSvg from "../../assets/images/logo-light.svg";
 
 //i18n
 import { withTranslation } from "react-i18next";
+import { FullScreen, useFullScreenHandle } from "react-full-screen";
+import RevenueView from "pages/Revenue/revenueView";
+import StockView from "pages/Stock/stockView";
+import BIShowcase from "pages/Showcase";
+import Breadcrumb from "Components/Common/Breadcrumb";
 
 const Header = (props: any) => {
 
   const [search, setsearch] = useState(false);
   const [megaMenu, setmegaMenu] = useState(false);
   const [socialDrp, setsocialDrp] = useState(false);
+  const [currentScreen, setCurrentScreen] = useState(0);
+  const fullscreenHandle = useFullScreenHandle();
 
-  const toggleFullscreen = () => {
-    let document: any = window.document;
-    document.body.classList.add("fullscreen-enable");
-    if (
-      !document.fullscreenElement &&
-      /* alternative standard method */ !document.mozFullScreenElement &&
-      !document.webkitFullscreenElement
-    ) {
-      // current working methods
-      if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen();
-      } else if (document.documentElement.mozRequestFullScreen) {
-        document.documentElement.mozRequestFullScreen();
-      } else if (document.documentElement.webkitRequestFullscreen) {
-        document.documentElement.webkitRequestFullscreen();
-      }
-    } else {
-      if (document.cancelFullScreen) {
-        document.cancelFullScreen();
-      } else if (document.mozCancelFullScreen) {
-        document.mozCancelFullScreen();
-      } else if (document.webkitCancelFullScreen) {
-        document.webkitCancelFullScreen();
-      }
-    }
-    // handle fullscreen exit
-    const exitHandler = () => {
-      if (
-        !document.webkitIsFullScreen &&
-        !document.mozFullScreen &&
-        !document.msFullscreenElement
-      )
-        document.body.classList.remove("fullscreen-enable");
-    };
-    document.addEventListener("fullscreenchange", exitHandler);
-    document.addEventListener("webkitfullscreenchange", exitHandler);
-    document.addEventListener("mozfullscreenchange", exitHandler);
-  };
+  const reportChange = useCallback(
+    (state) => {
+      console.log("Fullscreen State:", state ? "Ativado" : "Desativado");
+    },
+    []
+  );
 
   function tToggle() {
     var body = document.body;
@@ -367,7 +342,7 @@ const Header = (props: any) => {
               <button
                 type="button"
                 onClick={() => {
-                  toggleFullscreen();
+                  fullscreenHandle.enter();
                 }}
                 className="btn header-item noti-icon "
                 data-toggle="fullscreen"
@@ -392,6 +367,18 @@ const Header = (props: any) => {
           </div>
         </div>
       </header>
+      <FullScreen handle={fullscreenHandle} onChange={reportChange}>
+        {
+          fullscreenHandle.active && (
+            <div style={{ width: "100%", height: "100%" }} id="full-screen">
+              <div className="page-content">
+                <h4>metas</h4>
+                <BIShowcase fullscreenHandle={fullscreenHandle} />
+              </div>
+            </div>
+          )
+        }
+      </FullScreen>
     </React.Fragment>
   );
 };

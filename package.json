@@ -70,6 +70,7 @@
     "react-drag-listview": "^2.0.0",
     "react-dropzone": "^14.2.3",
     "react-flatpickr": "^3.10.13",
+    "react-full-screen": "^1.1.1",
     "react-i18next": "^13.5.0",
     "react-image-lightbox": "^5.1.4",
     "react-input-mask": "^2.0.4",

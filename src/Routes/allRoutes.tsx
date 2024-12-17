@@ -12,6 +12,7 @@ import Revenue from "pages/Revenue";
 import Register from "pages/Register/Empresa";
 import User from "pages/Register/Usuario";
 import Seller from "pages/Register/Vendedores";
+import BIShowcase from "pages/Showcase";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
@@ -21,6 +22,7 @@ const authProtectedRoutes = [
   { path: "/register/enterprise", component: <Register /> },
   { path: "/register/user", component: <User /> },
   { path: "/register/seller", component: <Seller /> },
+  // { path: "/showcase", component: <BIShowcase /> },
 
   { path: "/", exact: true, component: <Navigate to="/dashboard" /> },
 ];
