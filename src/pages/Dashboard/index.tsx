@@ -9,7 +9,7 @@ const Dashboard = () => {
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <Breadcrumb title="Dashboards" breadcrumbItem="Dashboards" />
+          <Breadcrumb title="Dashboards" breadPath={[{ link: "#", name: "Dashboards" }]} />
         </Container>
       </div>
     </React.Fragment >

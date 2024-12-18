@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Card, CardBody, CardTitle, Col, Form, FormFeedback, Input, Label, Row } from 'reactstrap'
 import { useFormik } from "formik";
 
 import * as Yup from 'yup';
+import InputMask from "react-input-mask"
 
 type Props = {}
 
 const CadEmpresa = (props: Props) => {
+    const [cnpj, setCnpj] = useState("")
     const formik: any = useFormik({
         initialValues: {
             firstname: "",
@@ -36,6 +38,20 @@ const CadEmpresa = (props: Props) => {
             // console.log("value", values.password);
         },
     });
+
+    const CNPJ = (props: any) => (
+        <InputMask
+            mask="99.999.999/0001-99"
+            name="cnpj"
+            value={props.value}
+            className="form-control input-color"
+            onChange={props.onChange}
+        // invalid={
+        //     formik.touched.email && formik.errors.email ? true : false
+        // }
+        >
+        </InputMask>
+    )
 
     return (
         <React.Fragment>
@@ -73,19 +89,7 @@ const CadEmpresa = (props: Props) => {
                                         <Col md={12}>
                                             <div className="mb-3">
                                                 <Label htmlFor="formrow-email-Input">CNPJ</Label>
-                                                <Input
-                                                    type="text"
-                                                    name="cnpj"
-                                                    className="form-control"
-                                                    id="formrow-email-Input"
-                                                // placeholder="Enter Your Email ID"
-                                                // value={formik.values.email}
-                                                // onChange={formik.handleChange}
-                                                // onBlur={formik.handleBlur}
-                                                // invalid={
-                                                //     formik.touched.email && formik.errors.email ? true : false
-                                                // }
-                                                />
+                                                <CNPJ/>
                                                 {/* {
                                     formik.errors.email && formik.touched.email ? (
                                         <FormFeedback type="invalid">{formik.errors.email}</FormFeedback>

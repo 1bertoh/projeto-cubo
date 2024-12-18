@@ -1,6 +1,8 @@
 import React from 'react'
 import { Card, CardBody, CardTitle, Col, Form, FormFeedback, Input, Label, Row } from 'reactstrap'
 import { useFormik } from "formik";
+import InputMask from "react-input-mask"
+
 
 import * as Yup from 'yup';
 
@@ -37,6 +39,16 @@ const Admin = (props: Props) => {
         },
     });
 
+    const Phone = (props:any) => (
+        <InputMask
+          mask="(99) 9999-9999"
+          value={props.value}
+          className="form-control input-color"
+          onChange={props.onChange}
+        >
+             </InputMask>
+      )
+
     return (
         <React.Fragment>
             <div className='page-content'>
@@ -53,7 +65,7 @@ const Admin = (props: Props) => {
                                             name="city"
                                             className="form-control"
                                             id="formrow-InputCity"
-                                            placeholder="0,00"
+                                            placeholder="Fulano"
                                         // value={formik.values.city}
                                         // onChange={formik.handleChange}
                                         // onBlur={formik.handleBlur}
@@ -76,7 +88,7 @@ const Admin = (props: Props) => {
                                             name="city"
                                             className="form-control"
                                             id="formrow-InputCity"
-                                            placeholder="0,00"
+                                            placeholder="exemplo@exemplo.com"
                                         // value={formik.values.city}
                                         // onChange={formik.handleChange}
                                         // onBlur={formik.handleBlur}
@@ -99,7 +111,7 @@ const Admin = (props: Props) => {
                                             name="city"
                                             className="form-control"
                                             id="formrow-InputCity"
-                                            placeholder="0,00"
+                                            placeholder=""
                                         // value={formik.values.city}
                                         // onChange={formik.handleChange}
                                         // onBlur={formik.handleBlur}
@@ -122,7 +134,7 @@ const Admin = (props: Props) => {
                                             name="city"
                                             className="form-control"
                                             id="formrow-InputCity"
-                                            placeholder="0,00"
+                                            placeholder=""
                                         // value={formik.values.city}
                                         // onChange={formik.handleChange}
                                         // onBlur={formik.handleBlur}
@@ -142,19 +154,7 @@ const Admin = (props: Props) => {
                                 <Col lg={3}>
                                     <div className="mb-3">
                                         <Label htmlFor="formrow-InputCity">Telefone</Label>
-                                        <Input
-                                            type="text"
-                                            name="city"
-                                            className="form-control"
-                                            id="formrow-InputCity"
-                                            placeholder="0,00"
-                                        // value={formik.values.city}
-                                        // onChange={formik.handleChange}
-                                        // onBlur={formik.handleBlur}
-                                        // invalid={
-                                        //     formik.touched.city && formik.errors.city ? true : false
-                                        // }
-                                        />
+                                        <Phone/>
                                         {/* {
                                                         formik.errors.city && formik.touched.city ? (
                                                             <FormFeedback type="invalid">{formik.errors.city}</FormFeedback>

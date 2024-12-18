@@ -30,7 +30,7 @@ const Stock = (props: Props) => {
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <Breadcrumb title="Stock" breadcrumbItem="Stock" />
+          <Breadcrumb title="Stock" breadPath={[{link: "#", name: "Stock"}]} />
           <StockView/>
         </Container>
       </div>

@@ -12,7 +12,7 @@ const Revenue = (props: Props) => {
     return (
         <React.Fragment>
             <div className="page-content">
-            <Breadcrumb title="Metas" breadcrumbItem="Metas" />
+            <Breadcrumb title="Metas" breadPath={[{link: "#", name: "Metas"}]} />
                 <RevenueView/>
             </div>
         </React.Fragment>
