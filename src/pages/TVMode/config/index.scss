@@ -54,3 +54,43 @@
   .checkbox .arrow--open {
     transform: rotate(90deg);
   }
+
+  .add-modulo-icon{
+    cursor: pointer;
+    margin-left: 10px;
+    display: inline-flex;
+    height: 100%;
+    align-items: center;
+  }
+  
+  .remove-modulo-icon{
+    color: red;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+  .remove-modulo-icon{
+    transform: scale(1);
+    transition: .3s transform;
+  }
+  .remove-modulo-icon:hover{
+    transform: scale(1.1)
+  }
+  
+  .add-tv-icon{
+    color: green;
+    margin-left: 10px;
+    transition: .3s transform;
+    cursor: pointer;
+  }
+  .add-tv-icon:hover{
+    transform: scale(1.1);
+  }
+  .delete-tv-icon{
+    color: red;
+    margin-left: 0px;
+    transition: .3s transform;
+    cursor: pointer;
+  }
+  .delete-tv-icon:hover{
+    transform: scale(1.1);
+  }
