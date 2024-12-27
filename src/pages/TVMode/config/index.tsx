@@ -267,10 +267,10 @@ const Expansible = (props: TExpansible) => {
             <DropdownMenu>
               <DropdownItem onClick={() => fullscreenHandle.enter()}>
                 <i
-                  title='Visualizar Módulo'
-                  className="fas fa-eye font-size-16 align-middle me-2"
+                  title='Entrar Modo TV'
+                  className="fas fa-tv font-size-16 align-middle me-2"
                   />
-                  Visualizar Módulo
+                  Entrar Modo TV
               </DropdownItem>
               <DropdownItem onClick={() => {}}>
                 <i
