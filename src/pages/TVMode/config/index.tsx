@@ -36,8 +36,8 @@ const TvModeConfig = () => {
           id: "data-string",
           name: "Modulo 01",
           children: [
-            { name: "Estoque", id: 690, isActive: true, seconds: 0 },
-            { name: "Faturamento", id: 1001, isActive: false, seconds: 0 },
+            { name: "Estoque", id: 690, isActive: true, seconds: 10 },
+            { name: "Faturamento", id: 1001, isActive: false, seconds: 10 },
           ],
         },
       ],
@@ -68,8 +68,8 @@ const TvModeConfig = () => {
         name: `Módulo ${tv.children.length + 1}`,
         id,
         children: [
-          { name: "Estoque", id: `Estoque-${id}`, isActive: true, seconds: 0  },
-          { name: "Faturamento", id: `Faturamento-${id}`, isActive: false, seconds: 0 },
+          { name: "Estoque", id: `Estoque-${id}`, isActive: true, seconds: 10  },
+          { name: "Faturamento", id: `Faturamento-${id}`, isActive: false, seconds: 10 },
         ],
       };
       tv.children.push(newModulo);
@@ -319,7 +319,8 @@ const Expansible = (props: TExpansible) => {
                   value={vision.seconds}
                   style={{ width: 70, height: 20, marginLeft: 15, marginRight: 5 }}
                   onChange={(e) => {
-                    const newSeconds = parseInt(e.target.value, 10) || 0;
+                    let newSeconds = parseInt(e.target.value, 10) || 10;
+                    newSeconds = newSeconds <= 5 ? 5 : newSeconds
                     updateVision(module.id, vision.id, { seconds: newSeconds });
                 }}
                 />
