@@ -1,29 +1,33 @@
 import Breadcrumb from 'Components/Common/Breadcrumb'
 import { useFormik } from 'formik'
-import React, { useEffect, useState } from 'react'
-import { Card, CardBody, CardTitle, Input } from 'reactstrap'
+import React, { useCallback, useEffect, useState } from 'react'
+import { Card, CardBody, CardTitle, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Input } from 'reactstrap'
 import * as Yup from 'yup'
 import "./index.scss"
 import { FaSquare, FaCheckSquare, FaMinusSquare } from "react-icons/fa";
 import { IoMdArrowDropright } from "react-icons/io";
 import TreeView, { flattenTree, INode } from "react-accessible-treeview";
 import cx from "classnames";
+import { FullScreen, useFullScreenHandle } from 'react-full-screen'
+import BIShowcase from 'pages/Showcase'
 
-type TRawTVData = {
+type TTVData = {
   name: string;
   id: number | string;
   children: {
-      id: string | number;
+    id: string | number;
+    name: string;
+    children: {
       name: string;
-      children: {
-          name: string;
-          id: number | string;
-      }[];
+      id: number | string;
+      isActive: boolean;
+      seconds: number 
+    }[];
   }[];
-}[]
+}
 
 const TvModeConfig = () => {
-  const [rawTVData, setRawTVData] = useState<TRawTVData>([
+  const [TVs, setTVs] = useState<TTVData[]>([
     {
       name: "TV1",
       id: 890,
@@ -32,22 +36,16 @@ const TvModeConfig = () => {
           id: "data-string",
           name: "Modulo 01",
           children: [
-            { name: "Estoque", id: 690 },
-            { name: "Faturamento", id: 1001 },
+            { name: "Estoque", id: 690, isActive: true, seconds: 0 },
+            { name: "Faturamento", id: 1001, isActive: false, seconds: 0 },
           ],
         },
       ],
     },
   ]);
 
-  const [TVs, setTVs] = useState<INode[][]>([]);
-
-  useEffect(() => {
-    setTVs(() => rawTVData.map((data) => flattenTree(data)));
-  }, [rawTVData]);
-
   const addTV = () => {
-    setRawTVData((prev) => {
+    setTVs((prev) => {
       const newTV = {
         name: `Nova TV ${prev.length + 1}`,
         id: Date.now(),
@@ -58,20 +56,20 @@ const TvModeConfig = () => {
   };
 
   const deleteTV = (index: number) => {
-    setRawTVData((prev) => prev.filter((_, i) => i !== index));
+    setTVs((prev) => prev.filter((_, i) => i !== index));
   };
 
   const addModulo = (indexTV: number) => {
-    setRawTVData((prev) => {
+    setTVs((prev) => {
       const updatedTVs = [...prev];
       const tv = updatedTVs[indexTV];
       const id = Date.now();
-      const newModulo = {
+      const newModulo:TTVData['children'][0] = {
         name: `Módulo ${tv.children.length + 1}`,
         id,
         children: [
-          { name: "Estoque", id: `Estoque-${id}` },
-          { name: "Faturamento", id: `Faturamento-${id}` },
+          { name: "Estoque", id: `Estoque-${id}`, isActive: true, seconds: 0  },
+          { name: "Faturamento", id: `Faturamento-${id}`, isActive: false, seconds: 0 },
         ],
       };
       tv.children.push(newModulo);
@@ -80,12 +78,32 @@ const TvModeConfig = () => {
   };
 
   const removeModulo = (indexTV: number, moduloId: number | string) => {
-    setRawTVData((prev) => {
+    console.log(moduloId)
+    setTVs((prev) => {
       const updatedTVs = [...prev];
       updatedTVs[indexTV].children = updatedTVs[indexTV].children.filter((modulo) => modulo.id !== moduloId);
       return updatedTVs;
     });
   };
+
+  const updateVision = (moduleId: number | string, visionId: number | string, changes: Partial<{ isActive: boolean; seconds: number }>) => {
+    setTVs((prev) => prev.map((tv) => ({
+        ...tv,
+        children: tv.children.map((module) => {
+            if (module.id !== moduleId) return module;
+            return {
+                ...module,
+                children: module.children.map((vision) =>
+                    vision.id === visionId ? { ...vision, ...changes } : vision
+                ),
+            };
+        }),
+    })));
+};
+
+useEffect(() => {
+  console.log(TVs)
+}, [TVs])
 
   return (
     <div className='page-content'>
@@ -111,6 +129,7 @@ const TvModeConfig = () => {
                 addModulo={addModulo}
                 deleteTV={deleteTV}
                 removeModulo={removeModulo}
+                updateVision={updateVision}
               />
             ))}
           </CardBody>
@@ -120,116 +139,210 @@ const TvModeConfig = () => {
   );
 };
 
-const TV = ({ tv, addModulo, deleteTV, removeModulo, index }) => {
+const TV = ({ tv, addModulo, deleteTV, removeModulo, index, updateVision }) => {
+  const [isDropdwownOpen, setIsDropdownOpen] = useState(false)
+
   return (
     <div>
       <div className="checkbox">
-        <h4>
-          {tv[0]?.name}
-          <span>
-            <i
-              title='Adicionar Módulo'
-              className="fas fa-plus font-size-16 align-middle me-2 add-tv-icon"
-              onClick={() => addModulo(index)}
-            />
-            <i
-              title='Deletar TV'
-              className="fas fa-trash font-size-16 align-middle me-2 delete-tv-icon"
-              onClick={() => deleteTV(index)}
-            />
-          </span>
+        <h4 className='d-flex align-items-center gap-2'>
+          {tv.name}
+          <Dropdown
+            isOpen={isDropdwownOpen}
+            toggle={() => setIsDropdownOpen((previous) => !previous)}
+          >
+            <DropdownToggle className="btn btn-light">
+              <i className="fas fa-ellipsis-v" />
+            </DropdownToggle>
+            <DropdownMenu>
+              <DropdownItem onClick={() => addModulo(index)}>
+                <i
+                  title='Adicionar TV'
+                  className="fas fa-pen font-size-16 align-middle me-2"
+                  />
+                  Editar TV
+              </DropdownItem>
+              <DropdownItem onClick={() => addModulo(index)}>
+                <i
+                  title='Adicionar TV'
+                  className="fas fa-plus font-size-16 align-middle me-2 add-tv-icon"
+                  />
+                  Adicionar Módulo
+              </DropdownItem>
+              <DropdownItem onClick={() => deleteTV(index)}>
+                <i
+                  title='Deletar TV'
+                  className="fas fa-trash font-size-16 align-middle me-2 delete-tv-icon"
+                  />
+                  Deletar TV
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
         </h4>
-        <TreeViewComponent data={tv} removeModulo={(moduloId) => removeModulo(index, moduloId)} />
+        <TreeViewComponent
+          data={tv}
+          removeModulo={(moduloId) => removeModulo(index, moduloId)}
+          updateVision={updateVision}
+        />
       </div>
     </div>
   );
 };
 
-const TreeViewComponent = ({ data, removeModulo }) => {
+type TTreeViewComponent = {
+  data: TTVData;
+  removeModulo: Function;
+  updateVision: Function;
+}
+const TreeViewComponent = (props: TTreeViewComponent) => {
+  const { data, removeModulo, updateVision } = props;
+  const fullscreenHandle = useFullScreenHandle();
+
+  useEffect(() => {
+    console.log(data, "dancing through the rain")
+  }, [])
+  
+  const reportChange = useCallback(
+    (state) => {
+      console.log("Fullscreen State:", state ? "Ativado" : "Desativado");
+    },
+    []
+  );
+
   return (
-    <TreeView
-      data={data}
-      aria-label="Data type Map tree"
-      multiSelect
-      propagateSelect
-      propagateSelectUpwards
-      togglableSelect
-      nodeRenderer={({
-        element,
-        isBranch,
-        isExpanded,
-        isHalfSelected,
-        isSelected,
-        getNodeProps,
-        handleSelect,
-        level,
-      }) => (
-        <div
-          {...getNodeProps()}
-          style={{ marginLeft: 40 * (level - 1) }}
-          className="d-flex align-items-center gap-1 py-1">
-          {isBranch && <ArrowIcon isOpen={isExpanded} />}
-          <CheckBoxIcon //Dar um jeito de quando abrir os subitems não selecionar todos os checkbox
-              className="checkbox-icon"
-              onClick={(e) => {
-                handleSelect(e);
-                e.stopPropagation();
-              }}
-              variant={isHalfSelected ? "some" : isSelected ? "all" : "none"}
-            />
-          <span className="name d-flex">
-            {element.name}
-            {isBranch && (
-              <i
-                title='Remover Módulo'
-                className='fas fa-trash font-size-16 align-middle me-2 remove-modulo-icon'
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  removeModulo(element.id);
-                }}
-              ></i>
-            )}
-            {
-                !isBranch && (
-                  <>
-                    <Input
-                      name="firstname"
-                      type="text"
-                      className="form-control"
-                      id="horizontal-firstname-Input"
-                      placeholder="0"
-                      style={{ width: 70, height: 30, marginLeft: 15, marginRight: 5 }}
-                    />
-                    <span>seg.</span>
-                  </>
-                )
-              }
-          </span>
-        </div>
-      )}
-    />
+    <>
+      {
+        data.children.map((module) => (
+          <Expansible key={module.id} module={module} removeModulo={removeModulo} updateVision={updateVision} />
+        ))
+      }
+
+    </>
   );
 };
 
+type TExpansible = {
+  module: TTVData['children'][0];
+  removeModulo: Function;
+  updateVision: Function;
+}
+const Expansible = (props: TExpansible) => {
+  const { module, removeModulo, updateVision } = props
+  const [expanded, setExpanded] = useState(false)
+  const [isDropdwownOpen, setIsDropdownOpen] = useState(false)
+  const fullscreenHandle = useFullScreenHandle();
+  
+    const reportChange = useCallback(
+      (state) => {
+        console.log("Fullscreen State:", state ? "Ativado" : "Desativado");
+      },
+      []
+    );
 
-const ArrowIcon = ({ isOpen }) => {
-  const baseClass = "arrow";
-  const classes = cx(baseClass, { [`${baseClass}--closed`]: !isOpen, [`${baseClass}--open`]: isOpen });
-  return <IoMdArrowDropright className={classes} />;
-};
+  useEffect(() => {
+    const doc = document.getElementById(`${module.id}`)
+    if (!doc) return
+    doc.style.height = expanded ? doc.scrollHeight + 'px' : '0px'
+  }, [expanded])
 
-const CheckBoxIcon = ({ variant, ...rest }) => {
-  switch (variant) {
-    case "all":
-      return <FaCheckSquare {...rest} />;
-    case "none":
-      return <FaSquare {...rest} />;
-    case "some":
-      return <FaMinusSquare {...rest} />;
-    default:
-      return null;
-  }
-};
+  return (
+    <div>
+      <p className='module-title d-flex align-items-center' onClick={() => setExpanded((previous) => !previous)}>
+        <i
+          className={`fas ${expanded ? "fa-caret-up" : "fa-caret-down"} font-size-16 align-middle me-2`}
+        />
+        {module.name}
+        
+        <Dropdown
+            isOpen={isDropdwownOpen}
+            toggle={() => setIsDropdownOpen((previous) => !previous)}
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+            }}
+          >
+            <DropdownToggle className="btn btn-light">
+              <i className="fas fa-ellipsis-v" />
+            </DropdownToggle>
+            <DropdownMenu>
+              <DropdownItem onClick={() => fullscreenHandle.enter()}>
+                <i
+                  title='Visualizar Módulo'
+                  className="fas fa-eye font-size-16 align-middle me-2"
+                  />
+                  Visualizar Módulo
+              </DropdownItem>
+              <DropdownItem onClick={() => {}}>
+                <i
+                  title='Editar Módulo'
+                  className="fas fa-pen  font-size-16 align-middle me-2"
+                  />
+                  Editar Módulo
+              </DropdownItem>
+              <DropdownItem onClick={() => {removeModulo(module.id)}}>
+                <i
+                  title='Deletar Módulo'
+                  className="fas fa-trash font-size-16 align-middle me-2 delete-tv-icon"
+                  
+                  />
+                  Deletar Módulo
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+      </p>
+      <div id={`${module.id}`} className={`module-children ${expanded ? 'expanded' : 'closed'}`}>
+        {
+          module.children.map((vision, index) => (
+            <div key={vision.id} className="form-check form-check-success mb-3">
+              <input
+                type="checkbox"
+                className="form-check-input"
+                id={`${vision.name}-${module.id}`}
+                checked={vision.isActive}
+                onChange={() => {
+                  updateVision(module.id, vision.id, { isActive: !vision.isActive });
+              }}
+              />
+              <label
+                className="form-check-label"
+                htmlFor={`${vision.name}-${module.id}`}
+              >
+                {vision.name}
+              </label>
+              <>
+                <Input
+                  name="firstname"
+                  type="text"
+                  className="form-control d-inline"
+                  id="horizontal-firstname-Input"
+                  placeholder="0"
+                  value={vision.seconds}
+                  style={{ width: 70, height: 20, marginLeft: 15, marginRight: 5 }}
+                  onChange={(e) => {
+                    const newSeconds = parseInt(e.target.value, 10) || 0;
+                    updateVision(module.id, vision.id, { seconds: newSeconds });
+                }}
+                />
+                <span>seg.</span>
+              </>
+            </div>
+          ))
+        }
+      </div>
+      <FullScreen handle={fullscreenHandle} onChange={reportChange}>
+        {
+          fullscreenHandle.active && (
+            <div style={{ width: "100%", height: "100%" }} id="full-screen">
+              <div className="page-content">
+                <h4>metas</h4>
+                <BIShowcase screens={module.children} fullscreenHandle={fullscreenHandle} />
+              </div>
+            </div>
+          )}
+      </FullScreen>
+    </div>
+  )
+
+}
 
 export default TvModeConfig;

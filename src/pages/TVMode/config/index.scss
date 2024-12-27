@@ -78,7 +78,6 @@
   
   .add-tv-icon{
     color: green;
-    margin-left: 10px;
     transition: .3s transform;
     cursor: pointer;
   }
@@ -94,3 +93,41 @@
   .delete-tv-icon:hover{
     transform: scale(1.1);
   }
+
+  .module-title{
+    cursor: pointer;
+    font-weight: bold;
+    margin: 0;
+  }
+  .module-title:hover{
+    & > i {
+      animation: caret-down .5s infinite alternate;
+    }
+  }
+
+  @keyframes caret-down {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(1.5);
+    }
+  }
+
+  .module-children{
+    margin-left: 20px;
+    overflow: hidden;
+    transition: 0.5s height ease-out;
+    font-size: 15px;
+    & p{
+      margin-bottom: 0px;
+    }
+  }
+
+  .module-children[class~="expanded"] {
+    height: 100px;
+  }
+  .module-children[class~="closed"] {
+    height: 0px;
+  }
+
